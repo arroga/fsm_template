@@ -2,6 +2,7 @@ dist
 dist-*
 cabal-dev
 Debug
+.metadata/
 *.o
 *.hi
 *.hie
@@ -9,6 +10,7 @@ Debug
 *.chs.h
 *.dyn_o
 *.dyn_hi
+.
 .hpc
 .hsenv
 .cabal-sandbox/
