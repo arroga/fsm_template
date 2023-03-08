@@ -1,8 +1,9 @@
 
 {-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE OverloadedRecordUpdate #-}
+{-# LANGUAGE OverloadedRecordDot #-}
 {-# LANGUAGE DuplicateRecordFields #-}
-module Parse (FsmDesc, templateName) where
+module Parse (FsmDesc(..), templateName, Signal(..), State(..)) where
+
 import Data.Yaml
 import GHC.Generics (Generic)
 
@@ -26,7 +27,7 @@ instance FromJSON State
 instance ToJSON State
 
 templateName :: String
-templateName = "EK9A"
+templateName = "EK9S"
 
 data FsmDesc = FsmDesc
   { name :: String 
@@ -35,3 +36,7 @@ data FsmDesc = FsmDesc
   }deriving (Show, Eq,Generic)
 instance FromJSON FsmDesc
 instance ToJSON FsmDesc
+
+
+func :: Signal -> String
+func sig = sig.desc

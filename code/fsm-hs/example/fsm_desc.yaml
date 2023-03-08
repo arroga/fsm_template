@@ -2,30 +2,30 @@ name: ec
 
 signal:
   - name: entry
-    desc: ½øÈë
+    desc: è¿›å…¥çŠ¶æ€ä¿¡å·
   - name: exit
-    desc: ÍË³ö
+    desc: é€€å‡ºçŠ¶æ€ä¿¡å·
   - name: resv
-    desc: ±£Áô
+    desc: ä¿ç•™
   - name: reinit
-    desc: ¸´Î»
+    desc: å¤ä½ä¿¡å·
   - name: init
-    desc: ³õÊ¼»¯
+    desc: åˆå§‹åŒ–ä¿¡å·
   - name: ip 
-    desc: init to preop
-  - nmae: ps 
-    desc: preop to safe op
+    desc: init state to preop state
+  - name: ps 
+    desc: preop state to safeop state
 
 state:
   - name: reinit
-    desc: ¸´Î»×´Ì¬
+    desc: å¤ä½çŠ¶æ€
     signal:
       - entry
       - exit
       - init
       - exception
   - name: init
-    desc: ³õÊ¼»¯×´Ì¬
+    desc: åˆå§‹åŒ–çŠ¶æ€
     signal:
       - entry
       - exit
