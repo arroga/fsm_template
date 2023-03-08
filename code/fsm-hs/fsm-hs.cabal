@@ -25,14 +25,23 @@ source-repository head
 
 library
   exposed-modules:
+      Func
       Lib
+      Parse
+      Signal
+      State
   other-modules:
       Paths_fsm_hs
   hs-source-dirs:
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , extra
+    , raw-strings-qq
+    , yaml
   default-language: Haskell2010
 
 executable fsm-hs-exe
@@ -43,8 +52,13 @@ executable fsm-hs-exe
       app
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , extra
     , fsm-hs
+    , raw-strings-qq
+    , yaml
   default-language: Haskell2010
 
 test-suite fsm-hs-test
@@ -56,6 +70,11 @@ test-suite fsm-hs-test
       test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , extra
     , fsm-hs
+    , raw-strings-qq
+    , yaml
   default-language: Haskell2010

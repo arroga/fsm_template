@@ -1,0 +1,33 @@
+name: ec
+
+signal:
+  - name: entry
+    desc: 进入
+  - name: exit
+    desc: 退出
+  - name: resv
+    desc: 保留
+  - name: reinit
+    desc: 复位
+  - name: init
+    desc: 初始化
+  - name: ip 
+    desc: init to preop
+  - nmae: ps 
+    desc: preop to safe op
+
+state:
+  - name: reinit
+    desc: 复位状态
+    signal:
+      - entry
+      - exit
+      - init
+      - exception
+  - name: init
+    desc: 初始化状态
+    signal:
+      - entry
+      - exit
+      - preop
+      - reinit
