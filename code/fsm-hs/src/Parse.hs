@@ -1,6 +1,5 @@
 
 {-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE OverloadedRecordDot #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 module Parse (FsmDesc(..), templateName, templateName', Signal(..), State(..)) where
 
@@ -41,6 +40,3 @@ data FsmDesc = FsmDesc
 instance FromJSON FsmDesc
 instance ToJSON FsmDesc
 
-
-func :: Signal -> String
-func sig = sig.desc

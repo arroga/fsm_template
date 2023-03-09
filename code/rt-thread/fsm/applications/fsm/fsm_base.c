@@ -10,7 +10,7 @@ static fsm_err_t toString(uint8_t num, uint8_t *s)
     return FSM_EOK;
 }
 
-static fsm_sig_base_t  common_sig[] = {{.sig=FSM_ENTRY_SIG}, {.sig = FSM_EXIT_SIG}, {.sig = FSM_INIT_SIG}};
+static fsm_sig_base_t  common_sig[] = {{.sig=FSM_ENTRY_SIG}, {.sig = FSM_EXIT_SIG}};
 
 #if RT_VERSION > 3
 
@@ -80,3 +80,7 @@ void fsm_dispatch_generic(fsm_handler_base_t* h, fsm_sig_base_t* e)
     }
 }
 
+void fsm_start(fsm_handler_base_t* h)
+{
+    fsm_send_sig(h,FSM_ENTRY_SIG);
+}

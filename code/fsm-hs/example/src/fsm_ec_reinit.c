@@ -1,6 +1,6 @@
 
-#include "fsm_ec_signal.h"
-
+#include "fsm_ec_sig.h"
+#include "fsm_ec_state.h"
 fsm_hr_t fsm_ec_reinit_entry_handler(fsm_ec_handler_t* const h, fsm_sig_base_t* const e)
 {
         return FSM_SHANDLED;

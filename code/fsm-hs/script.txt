@@ -1,6 +1,7 @@
 :l ".\\src\\Signal.hs"
 import Data.ByteString as B     
-txt <- B.readFile ".\\example\\fsm_desc.yaml"   
+txt <- B.readFile ".\\example\\fsm_desc.yaml"  
+import Data.Yaml   
 :set  -XOverloadedRecordDot   
 g = decode txt :: Maybe FsmDesc   
 Just b = g          
@@ -9,9 +10,21 @@ putStrLn (LE.intercalate "" f)
 
 
 :l ".\\src\\State.hs"
-import Data.ByteString as B     
+import Data.ByteString as B  
+import Data.Yaml   
 txt <- B.readFile ".\\example\\fsm_desc.yaml"   
 :set  -XOverloadedRecordDot   
 g = decode txt :: Maybe FsmDesc   
 Just b = g          
 f <- mkCText ".\\example" b
+
+:l ".\\src\\State.hs"
+import Data.ByteString as B  
+import Data.Yaml   
+txt <- B.readFile ".\\example\\fsm_desc.yaml"   
+:set  -XOverloadedRecordDot   
+g = decode txt :: Maybe FsmDesc   
+Just b = g          
+f = mkStatetext "ec" $ (LE.head b.state)
+putStrLn f
+

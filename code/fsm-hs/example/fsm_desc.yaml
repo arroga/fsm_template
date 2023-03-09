@@ -9,6 +9,8 @@ signal:
     desc: 保留
   - name: reinit
     desc: 复位信号
+  - name: exception
+    desc: 异常信号  
   - name: init
     desc: 初始化信号
   - name: ip 
@@ -35,7 +37,7 @@ state:
     signal:
       - entry
       - exit
-      - preop
+      - ip
       - reinit
       - exception
   - name: preop

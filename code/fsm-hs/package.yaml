@@ -26,6 +26,8 @@ dependencies:
 - aeson
 - extra
 - raw-strings-qq
+- path-io
+- path
 ghc-options:
 - -Wall
 - -Wcompat
@@ -36,6 +38,7 @@ ghc-options:
 - -Wmissing-home-modules
 - -Wpartial-fields
 - -Wredundant-constraints
+- -Wno-Wname-shadowing
 
 library:
   source-dirs: src

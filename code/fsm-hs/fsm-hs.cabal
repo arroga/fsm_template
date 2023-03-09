@@ -25,9 +25,7 @@ source-repository head
 
 library
   exposed-modules:
-      Base
       Core
-      Func
       Lib
       Parse
       Signal
@@ -36,12 +34,14 @@ library
       Paths_fsm_hs
   hs-source-dirs:
       src
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-Wname-shadowing
   build-depends:
       aeson
     , base >=4.7 && <5
     , bytestring
     , extra
+    , path
+    , path-io
     , raw-strings-qq
     , yaml
   default-language: Haskell2010
@@ -52,13 +52,15 @@ executable fsm-hs-exe
       Paths_fsm_hs
   hs-source-dirs:
       app
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-Wname-shadowing -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
     , base >=4.7 && <5
     , bytestring
     , extra
     , fsm-hs
+    , path
+    , path-io
     , raw-strings-qq
     , yaml
   default-language: Haskell2010
@@ -70,13 +72,15 @@ test-suite fsm-hs-test
       Paths_fsm_hs
   hs-source-dirs:
       test
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-Wname-shadowing -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
     , base >=4.7 && <5
     , bytestring
     , extra
     , fsm-hs
+    , path
+    , path-io
     , raw-strings-qq
     , yaml
   default-language: Haskell2010

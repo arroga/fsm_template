@@ -15,7 +15,8 @@ typedef rt_mailbox_t fsm_eq_t;
 #define FSM_STRAN       (0)
 #define FSM_SHANDLED    (1)
 #define FSM_SUNHANDLED  (2)
-
+/*状态转变*/
+#define FSM_TRAN(x)  (fsm_get_handler(h) = (fsm_handler) x,FSM_STRAN)
 
 typedef enum
 {
@@ -33,7 +34,6 @@ enum
 {
     FSM_ENTRY_SIG = 0,
     FSM_EXIT_SIG,
-    FSM_INIT_SIG,
     FSM_USER_SIG
 };
 
@@ -67,14 +67,16 @@ fsm_err_t fsm_send_generic(fsm_eq_t queue, const void *addr);
 fsm_err_t fsm_recv_generic(fsm_eq_t queue, const void *addr, uint32_t timeout);
 fsm_err_t fsm_urgent_generic(fsm_eq_t queue, const void *addr);
 void fsm_dispatch_generic(fsm_handler_base_t* h, fsm_sig_base_t* e);
+void fsm_start(fsm_handler_base_t* h);
 
 #define  fsm_get_sig_addr(x,sig)  (&((fsm_handler_base_t *) x)->sigs[sig])
+#define  fsm_get_handler(x)       (((fsm_handler_base_t *) x)->handler)
 #define  fsm_get_eq(x)       (((fsm_handler_base_t *) x)->eq)
 #define  fsm_set_state(x)    (((fsm_handler_base_t *) x)->state = x)                     /*设置状态*/
 #define  fsm_get_state(x)    (((fsm_handler_base_t *) x)->state)                         /*获取状态*/
 #define  fsm_send(x, y)      fsm_send_generic(fsm_get_eq(x),y)       /*发送信号*/
 #define  fsm_recv(x, y,z)    fsm_recv_generic(fsm_get_eq(x),y, z)    /*接收信号*/
-#define  fsm_send_sig(x,sig) fsm_send(x, (void *)fsm_get_sig_addrx,sig))
+#define  fsm_send_sig(x,sig) fsm_send(x, (void *)fsm_get_sig_addr(x,sig))
 #define  fsm_dispatch(x, y)  fsm_dispatch_generic((fsm_handler_base_t *) x, (fsm_sig_base_t *) y)x
 
 #endif /* APPLICATIONS_FSM_FSM_BASE_H_ */
