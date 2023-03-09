@@ -69,10 +69,10 @@ fsm_err_t fsm_recv_generic(fsm_eq_t queue, const void *addr, uint32_t timeout)
 #endif
 
 
-void fsm_dispatch_generic(fsm_handle_base_t* h, fsm_sig_base_t* e)
+void fsm_dispatch_generic(fsm_handler_base_t* h, fsm_sig_base_t* e)
 {
     fsm_handler s =  h->handler;
-    fsm_state_t r = (*s)(h, e);
+    fsm_hr_t r = (*s)(h, e);
     if(r == FSM_STRAN)
     {
         (void)(*s)(h, &common_sig[FSM_EXIT_SIG]);

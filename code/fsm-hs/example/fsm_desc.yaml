@@ -15,6 +15,12 @@ signal:
     desc: init state to preop state
   - name: ps 
     desc: preop state to safeop state
+  - name: pi
+    desc: preop state to init state
+  - name: wsdo
+    desc: 写SDO
+  - name: rsdo
+    desc: 读SDO
 
 state:
   - name: reinit
@@ -31,3 +37,15 @@ state:
       - exit
       - preop
       - reinit
+      - exception
+  - name: preop
+    desc: 预操作状态
+    signal:
+      - entry
+      - exit
+      - init
+      - reinit
+      - ps
+      - pi
+      - rsdo
+      - wsdo

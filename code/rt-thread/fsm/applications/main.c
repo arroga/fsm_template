@@ -18,13 +18,13 @@
 
 typedef struct
 {
-    fsm_handle_base_t base;
-}fsm_handle_base0_t;
+    fsm_handler_base_t base;
+}fsm_handler_base0_t;
 
 int main(void)
 {
     int count = 0;
-    fsm_handle_base0_t x;
+    fsm_handler_base0_t x;
     fsm_state_t state = fsm_get_state(&x);
     while (count++)
     {

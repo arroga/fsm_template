@@ -4,5 +4,14 @@ txt <- B.readFile ".\\example\\fsm_desc.yaml"
 :set  -XOverloadedRecordDot   
 g = decode txt :: Maybe FsmDesc   
 Just b = g          
-f = fmap (mkSigFuncDecl0 b.name b.state) b.signal
+f = fmap (mkSigFuncDecl' b.name b.state) b.signal
 putStrLn (LE.intercalate "" f)
+
+
+:l ".\\src\\State.hs"
+import Data.ByteString as B     
+txt <- B.readFile ".\\example\\fsm_desc.yaml"   
+:set  -XOverloadedRecordDot   
+g = decode txt :: Maybe FsmDesc   
+Just b = g          
+f <- mkCText ".\\example" b

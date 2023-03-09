@@ -2,11 +2,8 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedRecordDot #-}
 
-
-
-module Signal () where
+module Signal (mkSigFuncDecl) where
 import Parse 
-import GHC.Records 
 import Text.RawString.QQ
 import Data.List.Extra as LE
 import GHC.Generics (Generic)
@@ -24,12 +21,12 @@ sigEnumTempLast= [r|
 sigFuncDeclTempHead :: String
 sigFuncDeclTempHead = [r|
 
-/**************EK9S信号函数******************/
+/**************#EK9SA#信号函数******************/
 |]
 
 sigFuncDeclTempLast:: String
 sigFuncDeclTempLast = [r|
-/**************EK9S信号函数******************/|]
+/**************#EK9SA#信号函数******************/|]
 
 
 -- 生成信号枚举
@@ -55,6 +52,9 @@ mkSigFuncDecl :: FsmDesc -> String
 mkSigFuncDecl fsm = 
   let txt = fmap (mkSigFuncDecl' fsm.name fsm.state) fsm.signal
     in LE.concat txt
+
+
+-- 
 
 -- func :: Signal -> String
 -- func sig = sig.desc
