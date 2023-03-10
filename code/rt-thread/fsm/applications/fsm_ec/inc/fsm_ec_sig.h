@@ -8,92 +8,92 @@ enum
     FSM_EC_ENTRY_SIG = FSM_ENTRY_SIG,
     FSM_EC_EXIT_SIG = FSM_EXIT_SIG,
     FSM_EC_USER_SIG = FSM_USER_SIG,
-    FSM_EC_RESV_SIG,
-    FSM_EC_REINIT_SIG,
-    FSM_EC_EXCEPTION_SIG,
-    FSM_EC_INIT_SIG,
-    FSM_EC_IP_SIG,
-    FSM_EC_PS_SIG,
-    FSM_EC_PI_SIG,
-    FSM_EC_WSDO_SIG,
-    FSM_EC_RSDO_SIG,
+    FSM_EC_RESV_SIG,                    /*±£Áô*/
+    FSM_EC_REINIT_SIG,                  /*¸´Î»ĞÅºÅ*/
+    FSM_EC_EXCEPTION_SIG,               /*Òì³£ĞÅºÅ*/
+    FSM_EC_INIT_SIG,                    /*³õÊ¼»¯ĞÅºÅ*/
+    FSM_EC_IP_SIG,                      /*init state to preop state*/
+    FSM_EC_PS_SIG,                      /*preop state to safeop state*/
+    FSM_EC_PI_SIG,                      /*preop state to init state*/
+    FSM_EC_WSDO_SIG,                    /*Ğ´SDO*/
+    FSM_EC_RSDO_SIG,                    /*¶ÁSDO*/
 };
 
-/**************entryä¿¡å·å‡½æ•°******************/
-/*è¿›å…¥çŠ¶æ€ä¿¡å·*/
+/**************entryĞÅºÅº¯Êı******************/
+/*½øÈë×´Ì¬ĞÅºÅ*/
 fsm_hr_t fsm_ec_reinit_entry_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
 
 fsm_hr_t fsm_ec_init_entry_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
 
 fsm_hr_t fsm_ec_preop_entry_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
-/**************entryä¿¡å·å‡½æ•°******************/
+/**************entryĞÅºÅº¯Êı******************/
 
 
-/**************exitä¿¡å·å‡½æ•°******************/
-/*é€€å‡ºçŠ¶æ€ä¿¡å·*/
+/**************exitĞÅºÅº¯Êı******************/
+/*ÍË³ö×´Ì¬ĞÅºÅ*/
 fsm_hr_t fsm_ec_reinit_exit_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
 
 fsm_hr_t fsm_ec_init_exit_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
 
 fsm_hr_t fsm_ec_preop_exit_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
-/**************exitä¿¡å·å‡½æ•°******************/
+/**************exitĞÅºÅº¯Êı******************/
 
 
-/**************resvä¿¡å·å‡½æ•°******************/
-/*ä¿ç•™*/
-/**************resvä¿¡å·å‡½æ•°******************/
+/**************resvĞÅºÅº¯Êı******************/
+/*±£Áô*/
+/**************resvĞÅºÅº¯Êı******************/
 
 
-/**************reinitä¿¡å·å‡½æ•°******************/
-/*å¤ä½ä¿¡å·*/
+/**************reinitĞÅºÅº¯Êı******************/
+/*¸´Î»ĞÅºÅ*/
 fsm_hr_t fsm_ec_init_reinit_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
 
 fsm_hr_t fsm_ec_preop_reinit_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
-/**************reinitä¿¡å·å‡½æ•°******************/
+/**************reinitĞÅºÅº¯Êı******************/
 
 
-/**************exceptionä¿¡å·å‡½æ•°******************/
-/*å¼‚å¸¸ä¿¡å·*/
+/**************exceptionĞÅºÅº¯Êı******************/
+/*Òì³£ĞÅºÅ*/
 fsm_hr_t fsm_ec_reinit_exception_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
 
 fsm_hr_t fsm_ec_init_exception_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
-/**************exceptionä¿¡å·å‡½æ•°******************/
+/**************exceptionĞÅºÅº¯Êı******************/
 
 
-/**************initä¿¡å·å‡½æ•°******************/
-/*åˆå§‹åŒ–ä¿¡å·*/
+/**************initĞÅºÅº¯Êı******************/
+/*³õÊ¼»¯ĞÅºÅ*/
 fsm_hr_t fsm_ec_reinit_init_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
 
 fsm_hr_t fsm_ec_preop_init_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
-/**************initä¿¡å·å‡½æ•°******************/
+/**************initĞÅºÅº¯Êı******************/
 
 
-/**************ipä¿¡å·å‡½æ•°******************/
+/**************ipĞÅºÅº¯Êı******************/
 /*init state to preop state*/
 fsm_hr_t fsm_ec_init_ip_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
-/**************ipä¿¡å·å‡½æ•°******************/
+/**************ipĞÅºÅº¯Êı******************/
 
 
-/**************psä¿¡å·å‡½æ•°******************/
+/**************psĞÅºÅº¯Êı******************/
 /*preop state to safeop state*/
 fsm_hr_t fsm_ec_preop_ps_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
-/**************psä¿¡å·å‡½æ•°******************/
+/**************psĞÅºÅº¯Êı******************/
 
 
-/**************piä¿¡å·å‡½æ•°******************/
+/**************piĞÅºÅº¯Êı******************/
 /*preop state to init state*/
 fsm_hr_t fsm_ec_preop_pi_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
-/**************piä¿¡å·å‡½æ•°******************/
+/**************piĞÅºÅº¯Êı******************/
 
 
-/**************wsdoä¿¡å·å‡½æ•°******************/
-/*å†™SDO*/
+/**************wsdoĞÅºÅº¯Êı******************/
+/*Ğ´SDO*/
 fsm_hr_t fsm_ec_preop_wsdo_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
-/**************wsdoä¿¡å·å‡½æ•°******************/
+/**************wsdoĞÅºÅº¯Êı******************/
 
 
-/**************rsdoä¿¡å·å‡½æ•°******************/
-/*è¯»SDO*/
+/**************rsdoĞÅºÅº¯Êı******************/
+/*¶ÁSDO*/
 fsm_hr_t fsm_ec_preop_rsdo_handler(fsm_ec_handler_t* const h,fsm_sig_base_t* const e);
-/**************rsdoä¿¡å·å‡½æ•°******************/
+/**************rsdoĞÅºÅº¯Êı******************/
 #endif

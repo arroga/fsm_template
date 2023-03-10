@@ -1,5 +1,3 @@
-{-# LANGUAGE QuasiQuotes #-}
-{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Core
     ( 
@@ -12,7 +10,7 @@ import Signal
 import State
 import Path.IO
 import Path.Internal
-import Data.List.Extra as LE
+
 
 mkFsm :: FilePath -> FsmDesc -> IO ()
 mkFsm path fsm = do

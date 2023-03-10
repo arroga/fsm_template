@@ -1,5 +1,4 @@
 name: ec
-
 signal:
   - name: entry
     desc: 进入状态信号
@@ -27,27 +26,14 @@ signal:
 state:
   - name: reinit
     desc: 复位状态
-    signal:
-      - entry
-      - exit
-      - init
-      - exception
+    # 接收到信号执行事件
+    event:
+      - name: entry
+      # 事件继承于父类，可与不同状态执行同一个信号公用函数
+      - parent: 
   - name: init
-    desc: 初始化状态
-    signal:
-      - entry
-      - exit
-      - ip
-      - reinit
-      - exception
-  - name: preop
-    desc: 预操作状态
-    signal:
-      - entry
-      - exit
-      - init
-      - reinit
-      - ps
-      - pi
-      - rsdo
-      - wsdo
+    desc: 复位状态
+    # 接收到信号执行事件
+    event:
+      - name: entry
+      - parent: reinit

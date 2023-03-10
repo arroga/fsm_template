@@ -43,6 +43,8 @@ library
     , path
     , path-io
     , raw-strings-qq
+    , text
+    , text-format
     , yaml
   default-language: Haskell2010
 
@@ -62,6 +64,8 @@ executable fsm-hs-exe
     , path
     , path-io
     , raw-strings-qq
+    , text
+    , text-format
     , yaml
   default-language: Haskell2010
 
@@ -82,5 +86,7 @@ test-suite fsm-hs-test
     , path
     , path-io
     , raw-strings-qq
+    , text
+    , text-format
     , yaml
   default-language: Haskell2010

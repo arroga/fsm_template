@@ -3,8 +3,7 @@
 #include "fsm_ec_state.h"
 fsm_hr_t fsm_ec_init_entry_handler(fsm_ec_handler_t* const h, fsm_sig_base_t* const e)
 {
-
-        return FSM_TRAN(fsm_ec_reinit_handler);
+        return FSM_SHANDLED;
 }
 
 fsm_hr_t fsm_ec_init_exit_handler(fsm_ec_handler_t* const h, fsm_sig_base_t* const e)

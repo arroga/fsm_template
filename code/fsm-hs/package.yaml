@@ -28,6 +28,8 @@ dependencies:
 - raw-strings-qq
 - path-io
 - path
+- text
+- text-format
 ghc-options:
 - -Wall
 - -Wcompat
