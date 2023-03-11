@@ -28,3 +28,12 @@ Just b = g
 f = mkStatetext "ec" $ (LE.head b.state)
 putStrLn f
 
+
+:l ".\\src\\Core.hs"
+import Data.ByteString as B  
+import Data.Yaml   
+txt <- B.readFile ".\\example\\fsm_desc.yaml"   
+:set  -XOverloadedRecordDot   
+g = decode txt :: Maybe FsmDesc   
+Just b = g    
+mkFsm "./example" b 

@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "fsm_ec_state.h": "c",
+        "fsm_ec_sig.h": "c"
+    }
+}

@@ -12,7 +12,6 @@ import Data.Text.IO as TL
 import Data.Text as T(unpack) 
 import Data.Text.Format
 
-
 -- h文件名字
 hNameTemp :: Text -> Text -> String
 hNameTemp n s = "fsm_"  <> T.unpack (TL.toStrict n) <> "_" <> T.unpack ( TL.toStrict s) <> ".c"
@@ -73,13 +72,13 @@ caseTemp = [r|
 mkStateText :: Text -> State -> Text
 mkStateText name state = format stateFuncInstTemp (name, state.name,name,mkCaseT')
   where 
-    mkCaseT event = format caseTemp (TL.toUpper (TL.concat ["fsm_",name,"_",event.name,"_SIG"]), name,name, state.name,event.name)
+    mkCaseT event = format caseTemp (TL.toUpper (TL.concat ["fsm_",name,"_",event.name,"_SIG"]), name,state.name,event.name)
     mkCaseT' = TL.concat $ mkCaseT <$> state.event
 
 -- 生成C文本
-mkCText' :: FilePath -> Text -> State -> IO ()
-mkCText' path name state = do 
-  TL.writeFile (path <> "/src/" <> hNameTemp name state.name) (TL.toStrict txt)
+mkCText' :: FilePath ->String-> Text -> State -> IO ()
+mkCText' path encoding name state = do 
+  writeWtihEncoding (path <> "/src/" <> hNameTemp name state.name) txt encoding
   where 
     cHeadText = TL.replace templateName' name cHeadTemp
     cLastText = TL.replace templateName' name cLastTemp
@@ -90,7 +89,7 @@ mkCText' path name state = do
 -- 生成所有C文件
 mkCText :: FilePath -> FsmDesc->IO()
 mkCText path s = do 
-  mapM_ (mkCText' path s.name) s.state
+  mapM_ (mkCText' path s.encoding s.name) s.state
 
 -- h文件头模板
 hTempHText :: Text
@@ -109,7 +108,7 @@ hTempLText = [r|
 -- 新建fsm_xx_state.hs 里面包含状态函数声明
 mkHText :: FilePath -> FsmDesc->IO()
 mkHText path fsm = do 
-  TL.writeFile fileName (TL.toStrict text)
+  writeWtihEncoding fileName text fsm.encoding
   where 
     hText = TL.replace templateName' fsm.name (TL.replace templateName (TL.toUpper fsm.name) hTempHText)
     stateFunc state = TL.concat ["fsm_hr_t fsm_",fsm.name, "_", state.name,"_handler(fsm_",fsm.name,"_handler_t* const h",

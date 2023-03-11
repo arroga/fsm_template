@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.35.1.
+-- This file has been generated from package.yaml by hpack version 0.35.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -39,9 +39,11 @@ library
       aeson
     , base >=4.7 && <5
     , bytestring
+    , encoding >=0.8.0 && <=0.8.8
     , extra
     , path
     , path-io
+    , process
     , raw-strings-qq
     , text
     , text-format
@@ -59,10 +61,12 @@ executable fsm-hs-exe
       aeson
     , base >=4.7 && <5
     , bytestring
+    , encoding >=0.8.0 && <=0.8.8
     , extra
     , fsm-hs
     , path
     , path-io
+    , process
     , raw-strings-qq
     , text
     , text-format
@@ -81,10 +85,12 @@ test-suite fsm-hs-test
       aeson
     , base >=4.7 && <5
     , bytestring
+    , encoding >=0.8.0 && <=0.8.8
     , extra
     , fsm-hs
     , path
     , path-io
+    , process
     , raw-strings-qq
     , text
     , text-format
