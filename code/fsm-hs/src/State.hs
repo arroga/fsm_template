@@ -3,14 +3,14 @@
 {-# LANGUAGE OverloadedRecordDot #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleContexts #-}
-module State (mkStatFile) where
-import Text.RawString.QQ
+module State (mkStatFile,mkStateFuncText) where
+import Text.RawString.QQ ( r )
 import Parse 
 import Data.Text.Lazy as TL
     ( Text, concat, intercalate, replace, toStrict, toUpper )
-import Data.Text.IO as TL
+import Data.Text.IO as TL ()
 import Data.Text as T(unpack) 
-import Data.Text.Format
+import Data.Text.Format ( format, Format )
 
 -- h文件名字
 hNameTemp :: Text -> Text -> String
@@ -32,7 +32,7 @@ eventFuncInstTemp :: Format
 eventFuncInstTemp = [r|
 fsm_hr_t fsm_{}_{}_{}_handler(fsm_{}_handler_t* const h, fsm_sig_base_t* const e)
 {
-        return FSM_SHANDLED;
+    return FSM_SHANDLED;
 }
 |]
 
@@ -42,7 +42,7 @@ mkEventFunc name state  = TL.concat (func <$> fEvent)
   where 
     func event = format eventFuncInstTemp (name, state.name, event.name, name)
     --过滤事件，过滤掉继承类事件
-    fEvent = filter (\x-> x.parent /= "") state.event
+    fEvent = filter (\x-> x.parent == "") state.event
 
 --状态函数实列模板
 stateFuncInstTemp :: Format
@@ -50,9 +50,8 @@ stateFuncInstTemp = [r|
 fsm_hr_t fsm_{}_{}_handler(fsm_{}_handler_t* const h, fsm_sig_base_t* const e)
 {
     fsm_hr_t r = FSM_SHANDLED;
-    switch(e->sig)
-    {
-{}
+    switch (e->sig)
+    {{}
     default:
       break;
     }
@@ -64,16 +63,21 @@ fsm_hr_t fsm_{}_{}_handler(fsm_{}_handler_t* const h, fsm_sig_base_t* const e)
 caseTemp :: Format
 caseTemp = [r|
     case {}:
-      r = fsm_{}_{}_{}_handler(h,e);
-      break;
-|]
+        r = fsm_{}_{}_{}_handler(h,e);
+        break;|]
 
 --生成状态函数
-mkStateText :: Text -> State -> Text
-mkStateText name state = format stateFuncInstTemp (name, state.name,name,mkCaseT')
+mkStateFuncText' :: Text -> State -> Text
+mkStateFuncText' name state = format stateFuncInstTemp (name, state.name,name,mkCaseT')
   where 
     mkCaseT event = format caseTemp (TL.toUpper (TL.concat ["fsm_",name,"_",event.name,"_SIG"]), name,state.name,event.name)
     mkCaseT' = TL.concat $ mkCaseT <$> state.event
+
+mkStateFuncText :: FsmDesc->Text
+mkStateFuncText fsm = txt
+  where 
+    txt = TL.concat (mkStateFuncText'  fsm.name <$> fsm.state)
+
 
 -- 生成C文本
 mkCText' :: FilePath ->String-> Text -> State -> IO ()
@@ -83,8 +87,8 @@ mkCText' path encoding name state = do
     cHeadText = TL.replace templateName' name cHeadTemp
     cLastText = TL.replace templateName' name cLastTemp
     funcText =  mkEventFunc name state
-    txt = TL.concat [cHeadText, funcText, stateText,cLastText]
-    stateText = mkStateText name state
+    txt = TL.concat [cHeadText, funcText, cLastText]
+    -- stateText = mkStateText name state
 
 -- 生成所有C文件
 mkCText :: FilePath -> FsmDesc->IO()
@@ -94,8 +98,8 @@ mkCText path s = do
 -- h文件头模板
 hTempHText :: Text
 hTempHText = [r|
-#ifndef APPLICATIONS_#EK9SA#_STATE_H_
-#define APPLICATIONS_#EK9SA#_STATE_H_
+#ifndef _#EK9SA#_STATE_H_
+#define _#EK9SA#_STATE_H_
 #include "fsm_#ek9sa#_base.h"
 |]
 
@@ -117,8 +121,25 @@ mkHText path fsm = do
     text = hText <> stateText <> hTempLText
     fileName = path <> "/inc/" <> "fsm_" <> T.unpack (TL.toStrict fsm.name) <> "_state.h"
 
+fsmCFileTemp :: Text
+fsmCFileTemp = [r|
+#include "fsm_#ek9sa#_sig.h" 
+#include "fsm_#ek9sa#_state.h" 
+|]
+
+
+mkFsmFile :: FilePath -> FsmDesc->IO()
+mkFsmFile path fsm = do
+  writeWtihEncoding fileName (hText <> stateText) fsm.encoding
+  where
+    fileName =  path <> "/src/" <> "fsm_"<>T.unpack (TL.toStrict fsm.name) <> "_state.c"
+    hText = TL.replace templateName' fsm.name fsmCFileTemp
+    stateText = mkStateFuncText fsm
+
 -- 新建状态函数文件
 mkStatFile :: FilePath -> FsmDesc -> IO ()
 mkStatFile path fsm = do
   mkCText path fsm
   mkHText path fsm
+  mkFsmFile path fsm
+  mkFsmFile path fsm

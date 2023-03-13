@@ -39,3 +39,6 @@ state:
     event:
       - name: entry
         parent: reinit
+      - name: e
+        parent: reinit
+    

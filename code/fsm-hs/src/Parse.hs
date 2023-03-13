@@ -8,7 +8,7 @@ import GHC.Generics (Generic)
 import Data.Text.Lazy as TL
 import Data.Text as T(unpack)
 import Data.Text.IO
-import Data.ByteString as B
+import Data.ByteString as B ( ByteString, writeFile )
 import Data.Text.Encoding
 import Data.Encoding 
 import Debug.Trace

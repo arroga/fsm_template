@@ -67,7 +67,7 @@ mkSigEnum name sigXs = TL.replace templateName (TL.toUpper name) sigEnumTempHead
 mkSigFuncDecl0 :: Text->StateEvent->Text
 mkSigFuncDecl0 name event = case event.parent of 
   "" ->format "fsm_hr_t fsm_{}_{}_{}_handler(fsm_{}_handler_t* const h,fsm_sig_base_t* const e);"  (name,event.state, event.sig, name)
-  _ -> format "#define fsm_{}_{}_{}_handler fsm_{}_{}_{}_handler" (name,event.state, event.sig, name,event.state, event.parent)
+  _ -> format "#define fsm_{}_{}_{}_handler fsm_{}_{}_{}_handler" (name,event.state, event.sig, name,event.parent,event.sig)
 
 --生成信号描述，以及跟该信号关联的函数
 mkSigFuncDecl' :: Text -> [State] -> Signal -> Text

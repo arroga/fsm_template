@@ -72,6 +72,11 @@ mkbaseHFile path fsm = do
       txt1 = TL.replace templateName' (fsm.name) txt0  
 
 
+fsmCFile :: Text
+fsmCFile = [r|
+#include "fsm_#ek9sa#_sig.h" 
+#include "fsm_#ek9sa#_state.h" 
+|]
 
 mkFsm :: FilePath -> FsmDesc -> IO ()
 mkFsm path fsm = do
