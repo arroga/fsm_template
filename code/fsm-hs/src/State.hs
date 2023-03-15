@@ -3,14 +3,14 @@
 {-# LANGUAGE OverloadedRecordDot #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleContexts #-}
-module State (mkStatFile,mkStateFuncText) where
+module State (mkStatFile,mkStateFuncText,mkEnumState) where
 import Text.RawString.QQ ( r )
 import Parse 
 import Data.Text.Lazy as TL
     ( Text, concat, intercalate, replace, toStrict, toUpper )
-import Data.Text.IO as TL ()
+import Data.Text.IO as TL () 
 import Data.Text as T(unpack) 
-import Data.Text.Format ( format, Format )
+import Data.Text.Format ( format, Format, Only(Only) )
 
 -- h文件名字
 hNameTemp :: Text -> Text -> String
@@ -47,7 +47,7 @@ mkEventFunc name state  = TL.concat (func <$> fEvent)
 --状态函数实列模板
 stateFuncInstTemp :: Format
 stateFuncInstTemp = [r|
-fsm_hr_t fsm_{}_{}_handler(fsm_{}_handler_t* const h, fsm_sig_base_t* const e)
+fsm_hr_t fsm_{}_{}_state(fsm_{}_handler_t* const h, fsm_sig_base_t* const e)
 {
     fsm_hr_t r = FSM_SHANDLED;
     switch (e->sig)
@@ -82,7 +82,7 @@ mkStateFuncText fsm = txt
 -- 生成C文本
 mkCText' :: FilePath ->String-> Text -> State -> IO ()
 mkCText' path encoding name state = do 
-  writeWtihEncoding (path <> "/src/" <> hNameTemp name state.name) txt encoding
+  writeWtihEncoding (path <> "/user/src/" <> hNameTemp name state.name) txt encoding
   where 
     cHeadText = TL.replace templateName' name cHeadTemp
     cLastText = TL.replace templateName' name cLastTemp
@@ -115,11 +115,11 @@ mkHText path fsm = do
   writeWtihEncoding fileName text fsm.encoding
   where 
     hText = TL.replace templateName' fsm.name (TL.replace templateName (TL.toUpper fsm.name) hTempHText)
-    stateFunc state = TL.concat ["fsm_hr_t fsm_",fsm.name, "_", state.name,"_handler(fsm_",fsm.name,"_handler_t* const h",
+    stateFunc state = TL.concat ["fsm_hr_t fsm_",fsm.name, "_", state.name,"_state(fsm_",fsm.name,"_handler_t* const h",
       ", fsm_sig_base_t* const e);"]
     stateText = TL.intercalate "\n"  (stateFunc <$> fsm.state)
     text = hText <> stateText <> hTempLText
-    fileName = path <> "/inc/" <> "fsm_" <> T.unpack (TL.toStrict fsm.name) <> "_state.h"
+    fileName = path <> "/base/inc/" <> "fsm_" <> T.unpack (TL.toStrict fsm.name) <> "_state.h"
 
 fsmCFileTemp :: Text
 fsmCFileTemp = [r|
@@ -132,14 +132,22 @@ mkFsmFile :: FilePath -> FsmDesc->IO()
 mkFsmFile path fsm = do
   writeWtihEncoding fileName (hText <> stateText) fsm.encoding
   where
-    fileName =  path <> "/src/" <> "fsm_"<>T.unpack (TL.toStrict fsm.name) <> "_state.c"
+    fileName =  path <> "/base/src/" <> "fsm_"<>T.unpack (TL.toStrict fsm.name) <> "_state.c"
     hText = TL.replace templateName' fsm.name fsmCFileTemp
     stateText = mkStateFuncText fsm
+
+
+mkEnumState :: FsmDesc -> Text
+mkEnumState fsm = format headTxt (Only txt)
+  where
+    headTxt = "\nenum {\n{}\n};"
+    func s = format "    FSM_{}_{}_STATE" (TL.toUpper fsm.name ,TL.toUpper s.name)
+    txt = TL.intercalate ",\n" (func <$> fsm.state)
+
 
 -- 新建状态函数文件
 mkStatFile :: FilePath -> FsmDesc -> IO ()
 mkStatFile path fsm = do
   mkCText path fsm
   mkHText path fsm
-  mkFsmFile path fsm
   mkFsmFile path fsm

@@ -4,7 +4,7 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleContexts #-}
-module Signal (mkSigFile) where
+module Signal (mkSigFile,mkSigEnum) where
 import Parse 
 import Text.RawString.QQ
 import Data.List.Extra as LE
@@ -18,7 +18,6 @@ import Data.Text.Lazy as TL
       toStrict,
       toUpper,
       Text )
-import Data.Text.IO as TL
 import Data.Text.Format (format)
 import Data.Text as T(unpack)
 sigEnumTempHead :: Text
@@ -66,8 +65,8 @@ mkSigEnum name sigXs = TL.replace templateName (TL.toUpper name) sigEnumTempHead
 --如果没有继承的话就生成新的函数
 mkSigFuncDecl0 :: Text->StateEvent->Text
 mkSigFuncDecl0 name event = case event.parent of 
-  "" ->format "fsm_hr_t fsm_{}_{}_{}_handler(fsm_{}_handler_t* const h,fsm_sig_base_t* const e);"  (name,event.state, event.sig, name)
-  _ -> format "#define fsm_{}_{}_{}_handler fsm_{}_{}_{}_handler" (name,event.state, event.sig, name,event.parent,event.sig)
+  "" ->format "fsm_hr_t fsm_{}_{}_{}_handler(fsm_{}_handler_t* const h,fsm_sig_base_t* const e);\n"  (name,event.state, event.sig, name)
+  _ -> format "#define fsm_{}_{}_{}_handler fsm_{}_{}_{}_handler\n" (name,event.state, event.sig, name,event.parent,event.sig)
 
 --生成信号描述，以及跟该信号关联的函数
 mkSigFuncDecl' :: Text -> [State] -> Signal -> Text
@@ -83,7 +82,7 @@ mkSigFuncDecl' name stateXs sig = headText <> desc <>"\n" <>funcText <>endText
     -- eventS = 
     headText = TL.replace templateName (sig.name) sigFuncDeclTempHead
     endText = TL.replace templateName (sig.name) sigFuncDeclTempLast
-    funcText = TL.intercalate "\n"  r1
+    funcText = TL.intercalate ""  r1
 
 -- 生成所有信号函数声明
 mkSigFuncDecl :: FsmDesc -> Text
@@ -106,12 +105,11 @@ hTempLText = [r|
 -- 创建信号h文本
 mkSigHFile :: FilePath -> FsmDesc->IO()
 mkSigHFile path fsm = do 
-  writeWtihEncoding (path <> "/" <>"/inc/" <> fileName) text fsm.encoding
+  writeWtihEncoding (path <>"/base/inc/" <> fileName) text fsm.encoding
   where 
     hText = TL.replace templateName' fsm.name (TL.replace templateName (TL.toUpper fsm.name) hTempHText)
-    sigEnumText = mkSigEnum fsm.name (fsm.signal)
     sigFuncText = mkSigFuncDecl fsm
-    text = hText <> sigEnumText <> sigFuncText <> hTempLText
+    text = hText <> sigFuncText <> hTempLText
     fileName = "fsm_" <> T.unpack  (TL.toStrict fsm.name) <>  "_sig.h"
 -- func :: Signal -> String
 -- func sig = sig.desc
