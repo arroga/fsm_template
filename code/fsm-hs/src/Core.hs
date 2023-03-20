@@ -143,8 +143,6 @@ fsmCFile = [r|
 
 -- baseCFile :: Text 
 -- fsm
-
-
 mkFsm :: FilePath -> FsmDesc -> IO ()
 mkFsm path fsm = do
   ensureDir $ Path (path <> "/user/inc")

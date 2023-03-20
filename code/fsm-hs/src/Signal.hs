@@ -26,7 +26,6 @@ enum
 {
     FSM_#EK9SA#_ENTRY_SIG = FSM_ENTRY_SIG,
     FSM_#EK9SA#_EXIT_SIG = FSM_EXIT_SIG,
-    FSM_#EK9SA#_USER_SIG = FSM_USER_SIG,
 |]
 
 sigEnumTempLast :: Text
